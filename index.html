@@ -151,7 +151,7 @@
             box-shadow: 0 0 20px #FF6868;
         }
 
-        .custom-audio, a {
+         a {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -165,44 +165,61 @@
             color: #fff;
         }
 
-        .custom-audio button {
-            background: black;
-            color: white;
-            border: none;
-            padding: 10px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            border-radius: 100%;
-            transition: 0.3s;
-        }
+        .custom-audio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 0, 0, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
+    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+}
 
-        .custom-audio button:hover {
-            background: white;
-            color: black;
-        }
+.custom-audio button {
+    background: black;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+}
 
-        .progress-container {
-            flex-grow: 1;
-            height: 5px;
-            background: #333;
-            margin: 0 10px;
-            border-radius: 5px;
-            position: relative;
-            cursor: pointer;
-        }
+.progress-container {
+    flex-grow: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.3);
+    margin: 0 10px;
+    border-radius: 5px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+}
 
-        #progress-bar {
-            height: 100%;
-            width: 0;
-            background: white;
-            border-radius: 5px;
-            transition: width 0.2s;
-        }
-        
-        #playPause {
-            background-color: black;
-            color: White;
-        }
+#progress-bar {
+    height: 100%;
+    width: 0;
+    background: black;
+    border-radius: 5px;
+    transition: width 0.2s;
+}
+
+#currentTime {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
     </style>
 </head>
 <body>
@@ -226,12 +243,12 @@
         <h2>Ангельский голосок Ани</h2>
         <p>Её голос пробирает до мурашек. Темный звук, полный боли и свободы, разносится эхом по ночному городу.</p>
         <div class="custom-audio">
-            <button id="playPause" onclick="togglePlay()">▶</button>
-            <div class="progress-container" onclick="setAudioProgress(event)">
-                <div id="progress-bar"></div>
-            </div>
-            <span id="currentTime">0:00</span>
-        </div>
+    <button id="playPause">▶</button>
+    <div class="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <span id="currentTime">0:00</span>
+</div>
     </div>
 
     <div class="content">
@@ -260,72 +277,72 @@
     <p>︎︎</p>
         <p>︎︎︎</p>
     <script>
-        let audio1 = new Audio('music/1.mp3');  
-        let audio2 = new Audio('music/2.mp3');  
-        let isPlaying1 = false; 
-        let isPlaying2 = false; 
-    
-        function togglePlay() {
-            if (isPlaying1) {
-                audio1.pause();
-                document.getElementById("playPause").textContent = "▶";
-                // Вернуть громкость фоновой музыки на нормальную после остановки плеера
-                audio2.volume = 1;
-            } else {
-                audio1.play().catch(error => console.log(error));
-                document.getElementById("playPause").textContent = "︎︎︎  ||︎ ︎";
-                // Уменьшить громкость фоновой музыки, когда плеер включен
-                audio2.volume = 0.05;
-            }
-            isPlaying1 = !isPlaying1;
-        }
+document.addEventListener("DOMContentLoaded", () => {
+    const audio1 = new Audio('music/1.mp3');
+    const audio2 = new Audio('music/2.mp3');
+    let isPlaying1 = false;
+    let isPlaying2 = false;
 
-        // Слушаем событие завершения воспроизведения аудио
-        audio1.addEventListener('ended', () => {
-            isPlaying1 = false;
-            document.getElementById("playPause").textContent = "▶";  // Сменить кнопку на "▶"
-            // Вернуть громкость фоновой музыки на нормальную
+    const playPauseBtn = document.getElementById("playPause");
+    const progressBar = document.getElementById("progress-bar");
+    const currentTimeEl = document.getElementById("currentTime");
+    const progressContainer = document.querySelector(".progress-container");
+
+    function togglePlay() {
+        if (isPlaying1) {
+            audio1.pause();
+            playPauseBtn.textContent = "▶";
             audio2.volume = 1;
-        });
-
-        audio1.addEventListener('timeupdate', () => {
-            let progress = (audio1.currentTime / audio1.duration) * 100;
-            document.getElementById("progress-bar").style.width = progress + "%";
-            document.getElementById("currentTime").textContent = formatTime(audio1.currentTime);
-        });
-
-        function setAudioProgress(event) {
-            let progressContainer = document.querySelector(".progress-container");
-            let width = progressContainer.clientWidth;
-            let clickX = event.offsetX;
-            audio1.currentTime = (clickX / width) * audio1.duration;
+        } else {
+            audio1.play().catch(error => console.error("Ошибка воспроизведения:", error));
+            playPauseBtn.textContent = "︎ || ︎";
+            audio2.volume = 0.05;
         }
+        isPlaying1 = !isPlaying1;
+    }
 
-        function formatTime(seconds) {
-            let min = Math.floor(seconds / 60);
-            let sec = Math.floor(seconds % 60);
-            return `${min}:${sec < 10 ? '0' + sec : sec}`;
-        }
+    function updateProgress() {
+        if (!audio1.duration) return;
+        const progress = (audio1.currentTime / audio1.duration) * 100;
+        progressBar.style.width = `${progress}%`;
+        currentTimeEl.textContent = formatTime(audio1.currentTime);
+    }
 
-        function playMusic() {
-            document.getElementById("musicPrompt").style.display = 'none';
-            if (!isPlaying2) {
-                audio2.loop = true; 
-                audio2.play().catch(error => console.log(error));
-                isPlaying2 = true;
-            }
-        }
+    function setAudioProgress(event) {
+        if (!audio1.duration) return;
+        const clickX = event.offsetX;
+        const width = progressContainer.clientWidth;
+        audio1.currentTime = (clickX / width) * audio1.duration;
+    }
 
-        function openModal(img) {
-            var modal = document.getElementById("imageModal");
-            var modalImg = document.getElementById("modalImg");
-            modal.style.display = "flex";
-            modalImg.src = img.src;
-        }
+    function formatTime(seconds) {
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
+        return `${min}:${sec}`;
+    }
 
-        function closeModal() {
-            document.getElementById("imageModal").style.display = "none";
+    function playMusic() {
+        document.getElementById("musicPrompt").style.display = 'none';
+        if (!isPlaying2) {
+            audio2.loop = true;
+            audio2.play().catch(error => console.error("Ошибка фоновой музыки:", error));
+            isPlaying2 = true;
         }
+    }
+
+    audio1.addEventListener("timeupdate", updateProgress);
+    audio1.addEventListener("ended", () => {
+        isPlaying1 = false;
+        playPauseBtn.textContent = "▶";
+        audio2.volume = 1;
+    });
+
+    playPauseBtn.addEventListener("click", togglePlay);
+    progressContainer.addEventListener("click", setAudioProgress);
+
+    // Убираем начальный экран и запускаем фоновую музыку при клике на кнопку
+    document.querySelector("#musicPrompt button").addEventListener("click", playMusic);
+});
     </script>
 </body>
 </html>

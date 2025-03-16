@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Аня Нкеева</title>
+    <title>Яна Нкеева</title>
     <style>
         @font-face {
             font-family: 'BinnerDi'; src: url('font/ofont.ru_BinnerDi_1.woff') format('truetype');
@@ -25,7 +25,7 @@
         q  {
             font-style: italic; 
             font-family: 'Ebbe', sans-serif;
-            font-size: 2.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            font-size: 2.5rem; text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
         
         header {
@@ -198,6 +198,11 @@
             border-radius: 5px;
             transition: width 0.2s;
         }
+        
+        #playPause {
+            background-color: black;
+            color: White;
+        }
     </style>
 </head>
 <body>
@@ -213,7 +218,7 @@
     </div>
 
     <header>
-        <h1>Аня Нкеева</h1>
+        <h1>Яна Нкеева</h1>
     </header>
     <p>︎︎</p>
         <p>︎︎︎</p>
@@ -230,7 +235,7 @@
     </div>
 
     <div class="content">
-        <h2>Аня создает кукол</h2>
+        <h2>Яна создает кукол</h2>
         <p>Её куклы — это не просто игрушки. Это души, заключенные в текстиль. У каждой своя судьба, и они смотрят в тебя.</p>
         <section class="image-grid">
             <img src="photo/photo1.jpg" onclick="openModal(this)">
@@ -240,7 +245,7 @@
 
     <div class="content">
         <h2>Творческая и безумная</h2>
-        <p>Аня живет на своих условиях. Её будни — это смесь вдохновения, свободы и легкого хаоса.</p>
+        <p>Яна живет на своих условиях. Её будни — это смесь вдохновения, свободы и легкого хаоса.</p>
         <section class="image-grid">
             <img src="photo/photo3.jpg" onclick="openModal(this)">
             <img src="photo/photo4.jpg" onclick="openModal(this)">
@@ -255,10 +260,10 @@
     <p>︎︎</p>
         <p>︎︎︎</p>
     <script>
-        let audio1 = new Audio('music/1.ogg');  // 1.ogg для плеера
-        let audio2 = new Audio('music/2.mp3');  // 2.mp3 для бесконечного воспроизведения
-        let isPlaying1 = false; // Переменная для отслеживания состояния плеера 1.ogg
-        let isPlaying2 = false; // Переменная для отслеживания состояния бесконечного воспроизведения 2.mp3
+        let audio1 = new Audio('music/1.mp3');  
+        let audio2 = new Audio('music/2.mp3');  
+        let isPlaying1 = false; 
+        let isPlaying2 = false; 
     
         function togglePlay() {
             if (isPlaying1) {
@@ -268,9 +273,9 @@
                 audio2.volume = 1;
             } else {
                 audio1.play().catch(error => console.log(error));
-                document.getElementById("playPause").textContent = "||";
+                document.getElementById("playPause").textContent = "︎︎︎  ||︎ ︎";
                 // Уменьшить громкость фоновой музыки, когда плеер включен
-                audio2.volume = 0.1;
+                audio2.volume = 0.05;
             }
             isPlaying1 = !isPlaying1;
         }
@@ -305,7 +310,7 @@
         function playMusic() {
             document.getElementById("musicPrompt").style.display = 'none';
             if (!isPlaying2) {
-                audio2.loop = true; // Бесконечное воспроизведение 2.mp3
+                audio2.loop = true; 
                 audio2.play().catch(error => console.log(error));
                 isPlaying2 = true;
             }

@@ -1,457 +1,367 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Аня Нкеева</title>
-    <style>
-        @font-face {
-            font-family: 'BinnerDi'; 
-            src: url('font/ofont.ru_BinnerDi_1.woff') format('woff');
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Ebbe';
-            src: url('font/ofont.ru_Ebbe.woff') format('woff');
-            font-display: swap;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: #111;
-            color: #fff;
-            font-family: 'Ebbe', sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            touch-action: manipulation;
-        }
-        
-        q {
-            font-style: italic; 
-            font-family: 'Ebbe', sans-serif;
-            font-size: 4rem;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            display: inline-block;
-            margin: 0.5rem 0;
-        }
-        
-        header {
-            background-color: #8B0000;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 2px 10px rgba(255, 0, 0, 0.5);
-            width: 100%;
-            position: relative;
-        }
-
-        h1, h2, h3 {
-            font-family: 'BinnerDi', sans-serif;
-            margin: 0.8rem 0;
-            line-height: 0.7;
-        }
-
-        h1 { 
-            font-size: 8rem; 
-            color: #fff;
-            padding: 0.5rem 0;
-        }
-        h2 { 
-            font-size: 5.5rem; 
-            color: #FF3534;
-            margin: 1rem 0;
-        }
-        h3 { 
-            font-size: 3.9rem; 
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); 
-        }
-
-        p {
-            font-size: 3rem;
-            margin: 0.8rem auto;
-            line-height: 1.4;
-            max-width: 95%;
-        }
-
-        .content {
-            width: 95%;
-            padding: 1rem;
-            border-radius: 12px;
-            background: #1B1B1B;
-            box-shadow: 0 0 15px #FF0003;
-            margin: 1rem auto;
-        }
-
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .image-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 80%; /* Соотношение 0.8/1 (высота = 80% от ширины) */
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(255, 0, 102, 1);
-        }
-
-        .image-grid img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-            cursor: pointer;
-        }
-
-        .image-grid img:hover {
-            transform: scale(1.02);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            justify-content: center;
-            align-items: center;
-            touch-action: pan-y;
-        }
-
-        .modal-content {
-            max-width: 95%;
-            max-height: 80vh;
-            border-radius: 8px;
-            object-fit: contain;
-        }
-
-        #musicPrompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 2000;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        #musicPrompt h2 {
-            font-size: 4.5rem;
-            color: #FF0002;
-            text-shadow: 0 0 10px #FF554F;
-            margin-bottom: 1rem;
-        }
-
-        #musicPrompt p {
-            font-size: 2.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        #musicPrompt button {
-            background-color: #FF0000;
-            color: white;
-            font-size: 1rem;
-            padding: 0.8rem 1.5rem;
-            border: none;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: all 0.2s;
-            box-shadow: 0 0 10px #FF6868;
-        }
-
-        a {
-            display: inline-block;
-            background: #FF000B;
-            border-radius: 8px;
-            padding: 0.8rem 1.2rem;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-            color: #fff;
-            text-decoration: none;
-            margin: 0.8rem auto;
-            font-size: 0.9rem;
-            transition: transform 0.2s;
-        }
-
-        a:hover {
-            transform: scale(1.05);
-        }
-
-        .custom-audio {
-            display: flex;
-            align-items: center;
-            background: rgba(255, 0, 0, 0.2);
-            border-radius: 12px;
-            padding: 0.8rem;
-            width: 95%;
-            margin: 1rem auto;
-            box-shadow: 0 3px 10px rgba(255, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-        }
-
-        .custom-audio button {
-            background: black;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
-            flex-shrink: 0;
-        }
-
-        .progress-container {
-            flex-grow: 1;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.3);
-            margin: 0 0.8rem;
-            border-radius: 4px;
-            position: relative;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        #progress-bar {
-            height: 100%;
-            width: 0;
-            background: black;
-            border-radius: 4px;
-            transition: width 0.1s;
-        }
-
-        #currentTime {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: white;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-            flex-shrink: 0;
-            min-width: 40px;
-        }
-
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 4rem;
-            }
-            
-            h2 {
-                font-size: 3rem;
-            }
-            
-            p, q {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 3rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-            
-            p, q {
-                font-size: 1.2rem;
-            }
-            
-            .image-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            #musicPrompt h2 {
-            font-size: 2.5rem;
-        }
-
-        #musicPrompt p {
-            font-size: 1.5rem;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Аня Нкеева</title>
+  <style>
+    @font-face {
+      font-family: 'BinnerDi';
+      src: url('font/ofont.ru_BinnerDi_1.woff') format('truetype');
     }
-    </style>
+    @font-face {
+      font-family: 'Ebbe';
+      src: url('font/ofont.ru_Ebbe.woff') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #ddd;
+      font-family: 'Ebbe', sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header {
+      background: linear-gradient(90deg, #222, #111);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      margin-bottom: 20px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #333;
+    }
+
+    h1, h2, h3 {
+      font-family: 'BinnerDi', sans-serif;
+      text-shadow: 0 0 5px rgba(255,0,0,0.3);
+    }
+
+    h1 { 
+      font-size: 5rem;
+      color: #BA0400;
+    }
+
+    h2 {
+      font-size: 3.5rem;
+      color: #BA0400; 
+    }
+
+    h3 {
+      font-size: 4rem;
+      color: #BA0400;
+    }
+
+    .content {
+      background: linear-gradient(90deg, #222, #111); 
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.2);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    p {
+      font-size: 1.8rem;
+      margin: 15px 0;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 15px auto;
+      max-width: 800px;
+    }
+
+    .image-container {
+      position: relative;
+      padding-bottom: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      border: 1px solid #333;
+    }
+
+    .image-grid img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .image-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .custom-audio {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(70,0,0,0.3);
+      border-radius: 25px;
+      padding: 15px;
+      margin: 15px auto;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      max-width: 500px;
+      border: 1px solid #333;
+    }
+
+    .custom-audio button {
+      background: #4a0000;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-container {
+      flex-grow: 1;
+      height: 8px;
+      background: rgba(255,0,0,0.3);
+      margin: 0 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #progress-bar {
+      height: 100%;
+      width: 0;
+      background: #d32f2f;
+      border-radius: 4px;
+    }
+
+    #currentTime {
+      font-size: 1.2rem;
+      color: #d32f2f;
+    }
+
+    a {
+      display: inline-block;
+      background: #4a0000;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      margin: 10px auto;
+      font-size: 1.5rem;
+      box-shadow: 0 5px 15px rgba(139,0,0,0.5);
+      transition: transform 0.3s;
+      border: 1px solid #333;
+    }
+
+    a:hover {
+      transform: scale(1.05);
+    }
+
+    #musicPrompt {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 2000;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    #musicPrompt h2 {
+      font-size: 5rem;
+      color: #d32f2f;
+      margin-bottom: 1rem;
+    }
+
+    #musicPrompt p {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #musicPrompt button {
+      background-color: #7B0300;
+      color: #BD0002;
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-family: 'Ebbe', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.5rem; }
+      h3 { font-size: 2.8rem; }
+      p { font-size: 1.4rem; }
+      
+      .image-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      #musicPrompt h2 {
+        font-size: 7rem;
+      }
+
+      #musicPrompt p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="musicPrompt">
-        <h2>Ты приняла ислам🧌</h2>
-        <p>krokodildo penisini, peperone masturbini, tripo tropo crokodini bildo bildo bini</p>
-        <button onclick="playMusic()">Продолжить</button>
+  <div id="musicPrompt">
+    <h2>🐊</h2>
+    <p>krokodildo penisini, peperone masturbini, tripo tropo crokodini bildo bildo bini</p>
+    <button onclick="playMusic()">бугагагага</button>
+  </div>
+
+  <header>
+    <h1>Аня Нкеева</h1>
+  </header>
+  
+  <div class="content">
+    <h2>Ангельский голосок Ани</h2>
+    <p>Её голос пробирает до мурашек. Темный звук, полный боли и свободы, разносится эхом по ночному городу.</p>
+    <div class="custom-audio">
+      <button id="playPause">▶</button>
+      <div class="progress-container" id="progressContainer">
+        <div id="progress-bar"></div>
+      </div>
+      <span id="currentTime">0:00</span>
     </div>
+  </div>
 
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <img id="modalImg" class="modal-content" alt="Увеличенное изображение">
+  <div class="content">
+    <h2>Аня создает куклы</h2>
+    <p>Её куклы — это не просто игрушки. Это души, заключенные в текстиль. У каждой своя судьба, и они смотрят в тебя.</p>
+    <div class="image-grid">
+      <div class="image-container">
+        <img src="photo/photo1.jpg" alt="Кукла работы Ани">
+      </div>
+      <div class="image-container">
+        <img src="photo/photo2.jpg" alt="Еще одна кукла работы Ани">
+      </div>
     </div>
+  </div>
 
-    <header>
-        <h1>Аня Нкеева</h1>
-    </header>
-    
-    <div class="content">
-        <h2>Ангельский голосок Ани</h2>
-        <p>Её голос пробирает до мурашек. Темный звук, полный боли и свободы, разносится эхом по ночному городу.</p>
-        <div class="custom-audio">
-            <button id="playPause">▶</button>
-            <div class="progress-container">
-                <div id="progress-bar"></div>
-            </div>
-            <span id="currentTime">0:00</span>
-        </div>
+  <div class="content">
+    <h2>Творческая и безумная</h2>
+    <p>Аня живет на своих условиях. Её будни — это смесь вдохновения, свободы и легкого хаоса.</p>
+    <div class="image-grid">
+      <div class="image-container">
+        <img src="photo/photo3.jpg" alt="Аня за творчеством">
+      </div>
+      <div class="image-container">
+        <img src="photo/photo4.jpg" alt="Аня в повседневной жизни">
+      </div>
     </div>
+  </div>
 
-    <div class="content">
-        <h2>Аня создает куклы</h2>
-        <p>Её куклы — это не просто игрушки. Это души, заключенные в текстиль. У каждой своя судьба, и они смотрят в тебя.</p>
-        <div class="image-grid">
-            <div class="image-container">
-                <img src="photo/photo1.jpg" alt="Кукла работы Ани" onclick="openModal(this)" loading="lazy">
-            </div>
-            <div class="image-container">
-                <img src="photo/photo2.jpg" alt="Еще одна кукла работы Ани" onclick="openModal(this)" loading="lazy">
-            </div>
-        </div>
-    </div>
+  <div class="content">
+    <h2>У Ани есть <q>БЕСТ ФРЕДНС</q> Полина</h2>
+    <p><a href="https://romashka9058.github.io/polina/">Ссылочка на ее сатйик</a></p>
+  </div>
 
-    <div class="content">
-        <h2>Творческая и безумная</h2>
-        <p>Аня живет на своих условиях. Её будни — это смесь вдохновения, свободы и легкого хаоса.</p>
-        <div class="image-grid">
-            <div class="image-container">
-                <img src="photo/photo3.jpg" alt="Аня за творчеством" onclick="openModal(this)" loading="lazy">
-            </div>
-            <div class="image-container">
-                <img src="photo/photo4.jpg" alt="Аня в повседневной жизни" onclick="openModal(this)" loading="lazy">
-            </div>
-        </div>
-    </div>
-    
-    <div class="content">
-        <h2>У Ани есть <q>БЕСТ ФРЕДНС</q> Полина</h2>
-        <p><a href="https://romashka9058.github.io/polina/" target="_blank" rel="noopener">Ссылочка на ее сатйик</a></p> 
-    </div>
+  <script>
+    // Фоновая музыка
+    const bgAudio = new Audio('music/2.mp3');
+    bgAudio.loop = true;
+    bgAudio.volume = 0.3;
 
-    <script>
-        // Предзагрузка аудио
-        const audio1 = new Audio('music/1.mp3');
-        const audio2 = new Audio('music/2.mp3');
-        audio1.preload = 'auto';
-        audio2.preload = 'auto';
-        
-        let isPlaying1 = false;
-        let isPlaying2 = false;
+    // Основной аудиоплеер
+    const mainAudio = new Audio('music/1.mp3');
+    const playPauseBtn = document.getElementById('playPause');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTime = document.getElementById('currentTime');
+    const progressContainer = document.getElementById('progressContainer');
+    const musicPrompt = document.getElementById('musicPrompt');
 
-        function playMusic() {
-            document.getElementById("musicPrompt").style.display = 'none';
-            if (!isPlaying2) {
-                audio2.loop = true;
-                audio2.volume = 0.5;
-                audio2.play().catch(e => console.log("Автовоспроизведение заблокировано:", e));
-                isPlaying2 = true;
-            }
-        }
+    let isPlaying = false;
+    let bgMusicPlaying = false;
 
-        function togglePlay() {
-            if (isPlaying1) {
-                audio1.pause();
-                document.getElementById("playPause").textContent = "▶";
-                audio2.volume = 0.5;
-            } else {
-                audio1.play().catch(e => console.log("Ошибка воспроизведения:", e));
-                document.getElementById("playPause").textContent = "❚❚";
-                audio2.volume = 0.2;
-            }
-            isPlaying1 = !isPlaying1;
-        }
+    function playMusic() {
+      musicPrompt.style.display = 'none';
+      bgAudio.play().catch(e => console.log("Автовоспроизведение заблокировано:", e));
+      bgMusicPlaying = true;
+    }
 
-        function updateProgress() {
-            if (!isNaN(audio1.duration)) {
-                const progress = (audio1.currentTime / audio1.duration) * 100;
-                document.getElementById("progress-bar").style.width = `${progress}%`;
-                document.getElementById("currentTime").textContent = formatTime(audio1.currentTime);
-            }
-        }
+    function togglePlay() {
+      if (isPlaying) {
+        mainAudio.pause();
+        playPauseBtn.textContent = "▶";
+      } else {
+        mainAudio.play();
+        playPauseBtn.textContent = "❚❚";
+      }
+      isPlaying = !isPlaying;
+    }
 
-        function setAudioProgress(e) {
-            const width = this.clientWidth;
-            const clickX = e.offsetX;
-            if (!isNaN(audio1.duration)) {
-                audio1.currentTime = (clickX / width) * audio1.duration;
-            }
-        }
+    function updateProgress() {
+      const { currentTime, duration } = mainAudio;
+      const progressPercent = (currentTime / duration) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+      
+      const mins = Math.floor(currentTime / 60);
+      const secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
+      document.getElementById('currentTime').textContent = `${mins}:${secs}`;
+    }
 
-        function formatTime(seconds) {
-            const min = Math.floor(seconds / 60);
-            const sec = Math.floor(seconds % 60).toString().padStart(2, "0");
-            return `${min}:${sec}`;
-        }
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = mainAudio.duration;
+      mainAudio.currentTime = (clickX / width) * duration;
+    }
 
-        function openModal(img) {
-            const modal = document.getElementById("imageModal");
-            const modalImg = document.getElementById("modalImg");
-            modal.style.display = "flex";
-            modalImg.src = img.src;
-            document.body.style.overflow = "hidden";
-        }
+    mainAudio.addEventListener('timeupdate', updateProgress);
+    mainAudio.addEventListener('ended', () => {
+      isPlaying = false;
+      playPauseBtn.textContent = "▶";
+    });
 
-        function closeModal() {
-            document.getElementById("imageModal").style.display = "none";
-            document.body.style.overflow = "auto";
-        }
+    playPauseBtn.addEventListener('click', togglePlay);
+    progressContainer.addEventListener('click', setProgress);
 
-        // Инициализация
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("playPause").addEventListener("click", togglePlay);
-            document.querySelector(".progress-container").addEventListener("click", setAudioProgress);
-            audio1.addEventListener("timeupdate", updateProgress);
-            audio1.addEventListener("ended", () => {
-                isPlaying1 = false;
-                document.getElementById("playPause").textContent = "▶";
-                audio2.volume = 0.5;
-            });
-            
-            // Закрытие модального окна по ESC или клику вне изображения
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeModal();
-            });
-            
-            document.getElementById("imageModal").addEventListener("click", (e) => {
-                if (e.target === document.getElementById("imageModal")) {
-                    closeModal();
-                }
-            });
-            
-            // Попытка автоматического воспроизведения музыки (с обработкой ошибок)
-            setTimeout(() => {
-                audio2.play().then(() => {
-                    isPlaying2 = true;
-                    document.getElementById("musicPrompt").style.display = 'none';
-                }).catch(e => {
-                    console.log("Автовоспроизведение заблокировано, показываем промпт");
-                });
-            }, 1000);
-        });
-    </script>
+    // Попытка автоматического воспроизведения фоновой музыки
+    setTimeout(() => {
+      bgAudio.play().then(() => {
+        musicPrompt.style.display = 'none';
+        bgMusicPlaying = true;
+      }).catch(e => {
+        console.log("Автовоспроизведение фоновой музыки заблокировано");
+      });
+    }, 1000);
+  </script>
 </body>
 </html>

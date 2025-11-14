@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Аня Нкеева</title>
+  <style>
+    @font-face {
+      font-family: 'BinnerDi';
+      src: url('font/ofont.ru_BinnerDi_1.woff') format('truetype');
+    }
+    @font-face {
+      font-family: 'Ebbe';
+      src: url('font/ofont.ru_Ebbe.woff') format('truetype');
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #ddd;
+      font-family: 'Ebbe', sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header {
+      background: linear-gradient(90deg, #222, #111);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      margin-bottom: 20px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #333;
+    }
+
+    h1, h2, h3 {
+      font-family: 'BinnerDi', sans-serif;
+      text-shadow: 0 0 5px rgba(255,0,0,0.3);
+    }
+
+    h1 { 
+      font-size: 5rem;
+      color: #BA0400;
+    }
+
+    h2 {
+      font-size: 3.5rem;
+      color: #BA0400; 
+    }
+
+    h3 {
+      font-size: 4rem;
+      color: #BA0400;
+    }
+
+    .content {
+      background: linear-gradient(90deg, #222, #111); 
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.2);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      border: 1px solid #333;
+    }
+
+    p {
+      font-size: 1.8rem;
+      margin: 15px 0;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin: 15px auto;
+      max-width: 800px;
+    }
+
+    .image-container {
+      position: relative;
+      padding-bottom: 100%;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      border: 1px solid #333;
+    }
+
+    .image-grid img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s;
+    }
+
+    .image-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .custom-audio {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(70,0,0,0.3);
+      border-radius: 25px;
+      padding: 15px;
+      margin: 15px auto;
+      box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+      max-width: 500px;
+      border: 1px solid #333;
+    }
+
+    .custom-audio button {
+      background: #4a0000;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .progress-container {
+      flex-grow: 1;
+      height: 8px;
+      background: rgba(255,0,0,0.3);
+      margin: 0 15px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #progress-bar {
+      height: 100%;
+      width: 0;
+      background: #d32f2f;
+      border-radius: 4px;
+    }
+
+    #currentTime {
+      font-size: 1.2rem;
+      color: #d32f2f;
+    }
+
+    a {
+      display: inline-block;
+      background: #4a0000;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      text-decoration: none;
+      margin: 10px auto;
+      font-size: 1.5rem;
+      box-shadow: 0 5px 15px rgba(139,0,0,0.5);
+      transition: transform 0.3s;
+      border: 1px solid #333;
+    }
+
+    a:hover {
+      transform: scale(1.05);
+    }
+
+    #musicPrompt {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 2000;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    #musicPrompt h2 {
+      font-size: 5rem;
+      color: #d32f2f;
+      margin-bottom: 1rem;
+    }
+
+    #musicPrompt p {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    #musicPrompt button {
+      background-color: #7B0300;
+      color: #BD0002;
+      font-size: 1.5rem;
+      padding: 15px 30px;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+      font-family: 'Ebbe', sans-serif;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.5rem; }
+      h3 { font-size: 2.8rem; }
+      p { font-size: 1.4rem; }
+      
+      .image-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+      }
+
+      #musicPrompt h2 {
+        font-size: 7rem;
+      }
+
+      #musicPrompt p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="musicPrompt">
+    <h2>🐊</h2>
+    <p>krokodildo penisini, peperone masturbini, tripo tropo crokodini bildo bildo bini</p>
+    <button onclick="playMusic()">бугагагага</button>
+  </div>
+
+  <header>
+    <h1>Аня Нкеева</h1>
+  </header>
+  
+  <div class="content">
+    <h2>Ангельский голосок Ани</h2>
+    <p>Её голос пробирает до мурашек. Темный звук, полный боли и свободы, разносится эхом по ночному городу.</p>
+    <div class="custom-audio">
+      <button id="playPause">▶</button>
+      <div class="progress-container" id="progressContainer">
+        <div id="progress-bar"></div>
+      </div>
+      <span id="currentTime">0:00</span>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>Аня создает куклы</h2>
+    <p>Её куклы — это не просто игрушки. Это души, заключенные в текстиль. У каждой своя судьба, и они смотрят в тебя.</p>
+    <div class="image-grid">
+      <div class="image-container">
+        <img src="photo/photo1.jpg" alt="Кукла работы Ани">
+      </div>
+      <div class="image-container">
+        <img src="photo/photo2.jpg" alt="Еще одна кукла работы Ани">
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>Творческая и безумная</h2>
+    <p>Аня живет на своих условиях. Её будни — это смесь вдохновения, свободы и легкого хаоса.</p>
+    <div class="image-grid">
+      <div class="image-container">
+        <img src="photo/photo3.jpg" alt="Аня за творчеством">
+      </div>
+      <div class="image-container">
+        <img src="photo/photo4.jpg" alt="Аня в повседневной жизни">
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>У Ани есть <q>БЕСТ ФРЕДНС</q> Полина</h2>
+    <p><a href="https://romashka9058.github.io/polina/">Ссылочка на ее сатйик</a></p>
+  </div>
+
+  <script>
+    // Фоновая музыка
+    const bgAudio = new Audio('music/2.mp3');
+    bgAudio.loop = true;
+    bgAudio.volume = 0.3;
+
+    // Основной аудиоплеер
+    const mainAudio = new Audio('music/1.mp3');
+    const playPauseBtn = document.getElementById('playPause');
+    const progressBar = document.getElementById('progress-bar');
+    const currentTime = document.getElementById('currentTime');
+    const progressContainer = document.getElementById('progressContainer');
+    const musicPrompt = document.getElementById('musicPrompt');
+
+    let isPlaying = false;
+    let bgMusicPlaying = false;
+
+    function playMusic() {
+      musicPrompt.style.display = 'none';
+      bgAudio.play().catch(e => console.log("Автовоспроизведение заблокировано:", e));
+      bgMusicPlaying = true;
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        mainAudio.pause();
+        playPauseBtn.textContent = "▶";
+      } else {
+        mainAudio.play();
+        playPauseBtn.textContent = "❚❚";
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function updateProgress() {
+      const { currentTime, duration } = mainAudio;
+      const progressPercent = (currentTime / duration) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+      
+      const mins = Math.floor(currentTime / 60);
+      const secs = Math.floor(currentTime % 60).toString().padStart(2, '0');
+      document.getElementById('currentTime').textContent = `${mins}:${secs}`;
+    }
+
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = mainAudio.duration;
+      mainAudio.currentTime = (clickX / width) * duration;
+    }
+
+    mainAudio.addEventListener('timeupdate', updateProgress);
+    mainAudio.addEventListener('ended', () => {
+      isPlaying = false;
+      playPauseBtn.textContent = "▶";
+    });
+
+    playPauseBtn.addEventListener('click', togglePlay);
+    progressContainer.addEventListener('click', setProgress);
+
+    // Попытка автоматического воспроизведения фоновой музыки
+    setTimeout(() => {
+      bgAudio.play().then(() => {
+        musicPrompt.style.display = 'none';
+        bgMusicPlaying = true;
+      }).catch(e => {
+        console.log("Автовоспроизведение фоновой музыки заблокировано");
+      });
+    }, 1000);
+  </script>
+</body>
+</html>
